@@ -1,1 +1,32 @@
-# Obsidian Daily
+# Obsidian Daily Commit Log
+
+[Git hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) that logs git commits into daily [obsidian](https://obsidian.md/) note automatically.
+
+## Installation
+
+    git clone git@github.com:mile95/obsidian-daily-commit-log.git
+
+Create a directory for your git hooks (if you don't already have one)
+
+    mkdir ~/gitconfigs/hooks
+
+Copy the commit-msg hook to the global directory (the new file should **not** have a .py extension)
+
+    cp commit-msg.py ~/gitconfigs/hooks/commit-msg
+
+Update the local git configuration to look for git hooks in your newly created directory.
+
+To `~/.gitconfig`, add
+```
+    [core]
+        hooksPath = ~/gitconfigs/hooks
+```
+
+## Setup
+
+1. Set the `OBSIDIAN_VAULT_PATH` variable in the script to the full vault path
+1. set the `OBSIDIAN_DAILY_NOTE_BASE_PATH` variable in the script to the relative daily notes folder. For instance `/daily`. Leave empty if daily notes exist in the root.
+1. Make sure the daily note has a section starting with: `## Commits`
+1. Make sure the daily note follows `YYYY-MM-DD` format
+
+
