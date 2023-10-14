@@ -2,6 +2,8 @@
 
 [Git hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) that logs git commits into daily [obsidian](https://obsidian.md/) note automatically.
 
+![image](https://github.com/mile95/obsidian-daily-commit-log/assets/8545435/b3427ffe-2226-4423-b6a2-cb03ad215953)
+
 ## Installation
 
     git clone git@github.com:mile95/obsidian-daily-commit-log.git
