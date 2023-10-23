@@ -4,9 +4,12 @@ import sys
 import os
 import subprocess
 import datetime
+import shutil
+from pathlib import Path
 
 OBSIDIAN_VAULT_PATH = "~/Documents/bank"
 OBSIDIAN_DAILY_NOTE_BASE_PATH = "/daily"
+OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH = "/templates/daily"
 
 
 def get_commit_msg() -> str:
@@ -41,8 +44,21 @@ def get_daily_file() -> str:
     return f"{OBSIDIAN_VAULT_PATH}{OBSIDIAN_DAILY_NOTE_BASE_PATH}/{current_date}.md"
 
 
-def log_commit_to_daily_note(commit_msg: str, repo: str, daily_file_path: str):
-    # TODO: Create file if it does not exits
+def create_daily_if_missing(daily_file: str) -> None:
+    potential_file = Path(daily_file_path)
+    if not potential_file.is_file():
+        print("No file found")
+        template_file = ""
+        if "~" in OBSIDIAN_VAULT_PATH:
+            template_file = f"{os.path.expanduser(OBSIDIAN_VAULT_PATH)}{OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH}.md"
+        else:
+            template_file = (
+                f"{OBSIDIAN_VAULT_PATH}{OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH}.md"
+            )
+        shutil.copyfile(template_file, daily_file)
+
+
+def log_commit_to_daily_note(commit_msg: str, repo: str, daily_file_path: str) -> None:
     with open(daily_file_path, "r") as file:
         lines = file.readlines()
 
@@ -66,5 +82,6 @@ def log_commit_to_daily_note(commit_msg: str, repo: str, daily_file_path: str):
 commit_msg = get_commit_msg()
 repo = get_repo_name()
 daily_file_path = get_daily_file()
+create_daily_if_missing(daily_file_path)
 
 log_commit_to_daily_note(commit_msg, repo, daily_file_path)
