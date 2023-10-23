@@ -26,9 +26,9 @@ To `~/.gitconfig`, add
 
 ## Setup
 
-1. Set the `OBSIDIAN_VAULT_PATH` variable in the script to the full vault path
-1. set the `OBSIDIAN_DAILY_NOTE_BASE_PATH` variable in the script to the relative daily notes folder. For instance `/daily`. Leave empty if daily notes exist in the root.
-1. set the `OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH` variable in the script to the relative path for the daily template file. For instance `/templates/daily`.
+1. Set the `OBSIDIAN_VAULT_PATH` env variable in to the full vault path
+1. set the `OBSIDIAN_DAILY_NOTE_BASE_PATH` env variable to the relative daily notes folder. For instance `/daily`. Leave empty if daily notes exist in the root.
+1. set the `OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH` env variable to the relative path for the daily template file. For instance `/templates/daily`.
 1. Make sure the daily note has a section starting with: `## Commits`
 1. Make sure the daily note follows `YYYY-MM-DD` format
 

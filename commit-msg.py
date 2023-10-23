@@ -7,9 +7,18 @@ import datetime
 import shutil
 from pathlib import Path
 
-OBSIDIAN_VAULT_PATH = "~/Documents/bank"
-OBSIDIAN_DAILY_NOTE_BASE_PATH = "/daily"
-OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH = "/templates/daily"
+
+def verify_config() -> None:
+    for key in [
+        "OBSIDIAN_VAULT_PATH",
+        "OBSIDIAN_DAILY_NOTE_BASE_PATH",
+        "OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH",
+    ]:
+        try:
+            os.environ[key]
+        except KeyError:
+            print(f"Error: Environment Variable {key} not set")
+            sys.exit(1)
 
 
 def get_commit_msg() -> str:
@@ -39,22 +48,19 @@ def get_repo_name() -> str:
 
 def get_daily_file() -> str:
     current_date = datetime.date.today().strftime("%Y-%m-%d")
-    if "~" in OBSIDIAN_VAULT_PATH:
-        return f"{os.path.expanduser(OBSIDIAN_VAULT_PATH)}{OBSIDIAN_DAILY_NOTE_BASE_PATH}/{current_date}.md"
-    return f"{OBSIDIAN_VAULT_PATH}{OBSIDIAN_DAILY_NOTE_BASE_PATH}/{current_date}.md"
+    if "~" in os.environ["OBSIDIAN_VAULT_PATH"]:
+        return f"{os.path.expanduser(os.environ['OBSIDIAN_VAULT_PATH'])}{os.environ['OBSIDIAN_DAILY_NOTE_BASE_PATH']}/{current_date}.md"
+    return f"{os.environ['OBSIDIAN_VAULT_PATH']}{os.environ['OBSIDIAN_DAILY_NOTE_BASE_PATH']}/{current_date}.md"
 
 
 def create_daily_if_missing(daily_file: str) -> None:
-    potential_file = Path(daily_file_path)
+    potential_file = Path(daily_file)
     if not potential_file.is_file():
-        print("No file found")
         template_file = ""
-        if "~" in OBSIDIAN_VAULT_PATH:
-            template_file = f"{os.path.expanduser(OBSIDIAN_VAULT_PATH)}{OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH}.md"
+        if "~" in os.environ["OBSIDIAN_VAULT_PATH"]:
+            template_file = f"{os.path.expanduser(os.environ['OBSIDIAN_VAULT_PATH'])}{os.environ['OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH']}.md"
         else:
-            template_file = (
-                f"{OBSIDIAN_VAULT_PATH}{OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH}.md"
-            )
+            template_file = f"{os.environ['OBSIDIAN_VAULT_PATH']}{os.environ['OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH']}.md"
         shutil.copyfile(template_file, daily_file)
 
 
@@ -79,9 +85,16 @@ def log_commit_to_daily_note(commit_msg: str, repo: str, daily_file_path: str) -
         file.writelines(lines)
 
 
-commit_msg = get_commit_msg()
-repo = get_repo_name()
-daily_file_path = get_daily_file()
-create_daily_if_missing(daily_file_path)
+def main() -> int:
+    verify_config()
+    commit_msg = get_commit_msg()
+    repo = get_repo_name()
+    daily_file_path = get_daily_file()
+    create_daily_if_missing(daily_file_path)
 
-log_commit_to_daily_note(commit_msg, repo, daily_file_path)
+    log_commit_to_daily_note(commit_msg, repo, daily_file_path)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
