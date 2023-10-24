@@ -6,23 +6,7 @@
 
 ## Installation
 
-    git clone git@github.com:mile95/obsidian-daily-commit-log.git
-
-Create a directory for your git hooks (if you don't already have one)
-
-    mkdir ~/gitconfigs/hooks
-
-Copy the commit-msg hook to the global directory (the new file should **not** have a .py extension)
-
-    cp commit-msg.py ~/gitconfigs/hooks/commit-msg
-
-Update the local git configuration to look for git hooks in your newly created directory.
-
-To `~/.gitconfig`, add
-```
-    [core]
-        hooksPath = ~/gitconfigs/hooks
-```
+	./installation.sh
 
 ## Setup
 
@@ -31,5 +15,3 @@ To `~/.gitconfig`, add
 1. set the `OBSIDIAN_DAILY_NOTE_TEMPLATE_PATH` env variable to the relative path for the daily template file. For instance `/templates/daily`.
 1. Make sure the daily note has a section starting with: `## Commits`
 1. Make sure the daily note follows `YYYY-MM-DD` format
-
-
